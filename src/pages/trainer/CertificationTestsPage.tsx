@@ -1,617 +1,501 @@
-import React, { useState } from 'react'
+"use client"
+
+import type React from "react"
+import { useState } from "react"
 import {
   Plus,
   Search,
-  Filter,
   Eye,
   Edit,
   Trash2,
-  Download,
-  Clock,
   CheckCircle,
   XCircle,
   AlertTriangle,
   Users,
   BarChart3,
   FileText,
-  Target,
-  Calendar,
-  User,
-  Award,
-  BookOpen
-} from 'lucide-react'
+} from "lucide-react"
 
 interface CertificationTest {
   id: string
-  title: string
+  name: string
   description: string
-  certificationType: string
-  duration: number // in minutes
-  passingScore: number
-  totalQuestions: number
-  status: 'Draft' | 'Active' | 'Inactive' | 'Archived'
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert'
+  programName: string
   category: string
+  type: "Multiple Choice" | "Essay" | "Practical" | "Mixed"
+  duration: number // in minutes
+  totalQuestions: number
+  passingScore: number
+  status: "Active" | "Draft" | "Archived"
+  attempts: number
+  averageScore: number
   createdBy: string
   createdAt: string
   lastModified: string
-  attempts: number
-  passRate: number
-  averageScore: number
 }
 
-const mockCertificationTests: CertificationTest[] = [
+const mockTests: CertificationTest[] = [
   {
-    id: '1',
-    title: 'PMP Certification Exam',
-    description: 'Comprehensive exam covering all project management knowledge areas',
-    certificationType: 'Project Management Professional',
+    id: "1",
+    name: "PMP Certification Exam",
+    description: "Comprehensive assessment covering all PMP knowledge areas",
+    programName: "Project Management Professional (PMP)",
+    category: "Project Management",
+    type: "Multiple Choice",
     duration: 240,
-    passingScore: 70,
     totalQuestions: 200,
-    status: 'Active',
-    difficulty: 'Advanced',
-    category: 'Project Management',
-    createdBy: 'John Trainer',
-    createdAt: '2024-01-15',
-    lastModified: '2024-10-15',
-    attempts: 45,
-    passRate: 78,
-    averageScore: 72
-  },
-  {
-    id: '2',
-    title: 'CSM Foundation Test',
-    description: 'Basic Scrum Master concepts and practices assessment',
-    certificationType: 'Certified Scrum Master',
-    duration: 60,
-    passingScore: 75,
-    totalQuestions: 50,
-    status: 'Active',
-    difficulty: 'Beginner',
-    category: 'Agile',
-    createdBy: 'Sarah Trainer',
-    createdAt: '2024-02-20',
-    lastModified: '2024-09-20',
-    attempts: 120,
-    passRate: 85,
-    averageScore: 78
-  },
-  {
-    id: '3',
-    title: 'ITIL Service Strategy',
-    description: 'Advanced ITIL service strategy and design concepts',
-    certificationType: 'ITIL Expert',
-    duration: 90,
     passingScore: 80,
-    totalQuestions: 75,
-    status: 'Active',
-    difficulty: 'Expert',
-    category: 'IT Service Management',
-    createdBy: 'Mike Trainer',
-    createdAt: '2024-03-10',
-    lastModified: '2024-08-10',
-    attempts: 28,
-    passRate: 65,
-    averageScore: 75
+    status: "Active",
+    attempts: 156,
+    averageScore: 78.5,
+    createdBy: "Dr. Sarah Johnson",
+    createdAt: "2024-01-15",
+    lastModified: "2024-12-10",
   },
   {
-    id: '4',
-    title: 'Six Sigma Yellow Belt',
-    description: 'Introduction to Six Sigma methodology and tools',
-    certificationType: 'Six Sigma Yellow Belt',
-    duration: 45,
-    passingScore: 70,
-    totalQuestions: 30,
-    status: 'Draft',
-    difficulty: 'Beginner',
-    category: 'Quality Management',
-    createdBy: 'Lisa Trainer',
-    createdAt: '2024-09-01',
-    lastModified: '2024-09-01',
-    attempts: 0,
-    passRate: 0,
-    averageScore: 0
-  },
-  {
-    id: '5',
-    title: 'Azure Administrator Associate',
-    description: 'Microsoft Azure cloud administration and management',
-    certificationType: 'Microsoft Azure Administrator',
+    id: "2",
+    name: "Scrum Master Assessment",
+    description: "Practical assessment of Scrum methodology and leadership skills",
+    programName: "Certified Scrum Master (CSM)",
+    category: "Agile Development",
+    type: "Mixed",
     duration: 120,
+    totalQuestions: 75,
     passingScore: 75,
-    totalQuestions: 100,
-    status: 'Active',
-    difficulty: 'Intermediate',
-    category: 'Cloud Computing',
-    createdBy: 'David Trainer',
-    createdAt: '2024-04-05',
-    lastModified: '2024-07-05',
+    status: "Active",
+    attempts: 89,
+    averageScore: 82.3,
+    createdBy: "Prof. Michael Chen",
+    createdAt: "2024-02-20",
+    lastModified: "2024-12-08",
+  },
+  {
+    id: "3",
+    name: "Data Science Fundamentals Quiz",
+    description: "Basic assessment covering statistics, Python, and data analysis",
+    programName: "Data Science Fundamentals",
+    category: "Data Science",
+    type: "Multiple Choice",
+    duration: 90,
+    totalQuestions: 50,
+    passingScore: 70,
+    status: "Active",
     attempts: 67,
-    passRate: 72,
-    averageScore: 76
-  }
+    averageScore: 85.7,
+    createdBy: "Dr. Lisa Wang",
+    createdAt: "2024-03-10",
+    lastModified: "2024-12-05",
+  },
+  {
+    id: "4",
+    name: "Leadership Competency Evaluation",
+    description: "Comprehensive evaluation of leadership skills and decision-making",
+    programName: "Advanced Leadership Certificate",
+    category: "Leadership",
+    type: "Essay",
+    duration: 180,
+    totalQuestions: 10,
+    passingScore: 85,
+    status: "Draft",
+    attempts: 0,
+    averageScore: 0,
+    createdBy: "Prof. Robert Smith",
+    createdAt: "2024-11-15",
+    lastModified: "2024-12-01",
+  },
 ]
 
 const CertificationTestsPage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState<string>('all')
-  const [difficultyFilter, setDifficultyFilter] = useState<string>('all')
-  const [categoryFilter, setCategoryFilter] = useState<string>('all')
-  const [selectedTest, setSelectedTest] = useState<CertificationTest | null>(null)
-  const [showDetailsModal, setShowDetailsModal] = useState(false)
+  const [tests, setTests] = useState<CertificationTest[]>(mockTests)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [categoryFilter, setCategoryFilter] = useState<string>("All")
+  const [typeFilter, setTypeFilter] = useState<string>("All")
+  const [statusFilter, setStatusFilter] = useState<string>("All")
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [selectedTest, setSelectedTest] = useState<CertificationTest | null>(null)
 
-  const filteredTests = mockCertificationTests.filter(test => {
-    const matchesSearch = test.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         test.description.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesStatus = statusFilter === 'all' || test.status === statusFilter
-    const matchesDifficulty = difficultyFilter === 'all' || test.difficulty === difficultyFilter
-    const matchesCategory = categoryFilter === 'all' || test.category === categoryFilter
-    
-    return matchesSearch && matchesStatus && matchesDifficulty && matchesCategory
+  const filteredTests = tests.filter((test) => {
+    const matchesSearch =
+      test.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      test.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      test.programName.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesCategory = categoryFilter === "All" || test.category === categoryFilter
+    const matchesType = typeFilter === "All" || test.type === typeFilter
+    const matchesStatus = statusFilter === "All" || test.status === statusFilter
+    return matchesSearch && matchesCategory && matchesType && matchesStatus
   })
+
+  const stats = {
+    total: tests.length,
+    active: tests.filter((t) => t.status === "Active").length,
+    draft: tests.filter((t) => t.status === "Draft").length,
+    totalAttempts: tests.reduce((sum, t) => sum + t.attempts, 0),
+    avgScore: Math.round(tests.reduce((sum, t) => sum + t.averageScore, 0) / tests.length),
+  }
+
+  const handleDeleteTest = (testId: string) => {
+    if (window.confirm("Are you sure you want to delete this test?")) {
+      setTests((prev) => prev.filter((t) => t.id !== testId))
+    }
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Draft': return 'bg-gray-100 text-gray-800'
-      case 'Active': return 'bg-green-100 text-green-800'
-      case 'Inactive': return 'bg-yellow-100 text-yellow-800'
-      case 'Archived': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case "Active":
+        return "bg-green-900 text-green-300"
+      case "Draft":
+        return "bg-yellow-900 text-yellow-300"
+      case "Archived":
+        return "bg-slate-700 text-slate-300"
+      default:
+        return "bg-slate-700 text-slate-300"
     }
   }
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'Beginner': return 'bg-green-100 text-green-800'
-      case 'Intermediate': return 'bg-blue-100 text-blue-800'
-      case 'Advanced': return 'bg-yellow-100 text-yellow-800'
-      case 'Expert': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "Multiple Choice":
+        return "bg-blue-900 text-blue-300"
+      case "Essay":
+        return "bg-purple-900 text-purple-300"
+      case "Practical":
+        return "bg-green-900 text-green-300"
+      case "Mixed":
+        return "bg-orange-900 text-orange-300"
+      default:
+        return "bg-slate-700 text-slate-300"
     }
-  }
-
-  const stats = {
-    total: mockCertificationTests.length,
-    active: mockCertificationTests.filter(t => t.status === 'Active').length,
-    draft: mockCertificationTests.filter(t => t.status === 'Draft').length,
-    totalAttempts: mockCertificationTests.reduce((sum, test) => sum + test.attempts, 0),
-    averagePassRate: Math.round(mockCertificationTests.reduce((sum, test) => sum + test.passRate, 0) / mockCertificationTests.length)
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 bg-slate-900 min-h-screen">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Certification Tests</h1>
-          <p className="text-gray-600">Create and manage certification tests for various programs</p>
-        </div>
-        <button 
-          onClick={() => setShowCreateModal(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          Create Test
-        </button>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-white mb-2">Certification Tests</h1>
+        <p className="text-slate-300">Create and manage certification tests and assessments</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Total Tests</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+        <div className="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700">
+          <div className="flex items-center">
+            <div className="p-2 bg-blue-900 rounded-lg">
+              <FileText className="w-6 h-6 text-blue-400" />
             </div>
-            <FileText className="w-8 h-8 text-blue-600" />
+            <div className="ml-4">
+              <p className="text-sm font-medium text-slate-300">Total Tests</p>
+              <p className="text-2xl font-bold text-white">{stats.total}</p>
+            </div>
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Active Tests</p>
-              <p className="text-2xl font-bold text-green-600">{stats.active}</p>
+
+        <div className="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700">
+          <div className="flex items-center">
+            <div className="p-2 bg-green-900 rounded-lg">
+              <CheckCircle className="w-6 h-6 text-green-400" />
             </div>
-            <CheckCircle className="w-8 h-8 text-green-600" />
+            <div className="ml-4">
+              <p className="text-sm font-medium text-slate-300">Active</p>
+              <p className="text-2xl font-bold text-white">{stats.active}</p>
+            </div>
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Draft Tests</p>
-              <p className="text-2xl font-bold text-yellow-600">{stats.draft}</p>
+
+        <div className="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700">
+          <div className="flex items-center">
+            <div className="p-2 bg-yellow-900 rounded-lg">
+              <AlertTriangle className="w-6 h-6 text-yellow-400" />
             </div>
-            <AlertTriangle className="w-8 h-8 text-yellow-600" />
+            <div className="ml-4">
+              <p className="text-sm font-medium text-slate-300">Draft</p>
+              <p className="text-2xl font-bold text-white">{stats.draft}</p>
+            </div>
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Total Attempts</p>
-              <p className="text-2xl font-bold text-purple-600">{stats.totalAttempts}</p>
+
+        <div className="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700">
+          <div className="flex items-center">
+            <div className="p-2 bg-purple-900 rounded-lg">
+              <Users className="w-6 h-6 text-purple-400" />
             </div>
-            <Users className="w-8 h-8 text-purple-600" />
+            <div className="ml-4">
+              <p className="text-sm font-medium text-slate-300">Total Attempts</p>
+              <p className="text-2xl font-bold text-white">{stats.totalAttempts}</p>
+            </div>
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Avg Pass Rate</p>
-              <p className="text-2xl font-bold text-indigo-600">{stats.averagePassRate}%</p>
+
+        <div className="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700">
+          <div className="flex items-center">
+            <div className="p-2 bg-indigo-900 rounded-lg">
+              <BarChart3 className="w-6 h-6 text-indigo-400" />
             </div>
-            <BarChart3 className="w-8 h-8 text-indigo-600" />
+            <div className="ml-4">
+              <p className="text-sm font-medium text-slate-300">Avg Score</p>
+              <p className="text-2xl font-bold text-white">{stats.avgScore}%</p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="bg-white p-4 rounded-lg border border-gray-200">
-        <div className="flex flex-col md:flex-row gap-4">
+      {/* Actions */}
+      <div className="flex justify-between items-center mb-6">
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Create Test
+        </button>
+
+        <div className="flex gap-3">
+          <button className="px-4 py-2 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-800 transition-colors duration-200">
+            Export Results
+          </button>
+          <button className="px-4 py-2 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-800 transition-colors duration-200">
+            Question Bank
+          </button>
+        </div>
+      </div>
+
+      {/* Search and Filters */}
+      <div className="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700 mb-6">
+        <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Search tests..."
+                placeholder="Search tests by name, description, or program..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-400"
               />
             </div>
           </div>
-          <div className="flex gap-2">
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="all">All Statuses</option>
-              <option value="Draft">Draft</option>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-              <option value="Archived">Archived</option>
-            </select>
-            <select
-              value={difficultyFilter}
-              onChange={(e) => setDifficultyFilter(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="all">All Difficulties</option>
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
-              <option value="Expert">Expert</option>
-            </select>
+
+          <div className="flex gap-3">
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white"
             >
-              <option value="all">All Categories</option>
+              <option value="All">All Categories</option>
               <option value="Project Management">Project Management</option>
-              <option value="Agile">Agile</option>
-              <option value="IT Service Management">IT Service Management</option>
-              <option value="Quality Management">Quality Management</option>
-              <option value="Cloud Computing">Cloud Computing</option>
+              <option value="Agile Development">Agile Development</option>
+              <option value="Data Science">Data Science</option>
+              <option value="Leadership">Leadership</option>
+            </select>
+
+            <select
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              className="px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white"
+            >
+              <option value="All">All Types</option>
+              <option value="Multiple Choice">Multiple Choice</option>
+              <option value="Essay">Essay</option>
+              <option value="Practical">Practical</option>
+              <option value="Mixed">Mixed</option>
+            </select>
+
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white"
+            >
+              <option value="All">All Statuses</option>
+              <option value="Active">Active</option>
+              <option value="Draft">Draft</option>
+              <option value="Archived">Archived</option>
             </select>
           </div>
         </div>
       </div>
 
-      {/* Tests Table */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Test Details
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Certification Type
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Duration & Questions
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status & Difficulty
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Performance
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {filteredTests.map((test) => (
-                <tr key={test.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10">
-                        <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                          <BookOpen className="w-5 h-5 text-blue-600" />
-                        </div>
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{test.title}</div>
-                        <div className="text-sm text-gray-500">{test.description}</div>
-                        <div className="text-xs text-gray-400">By {test.createdBy}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">{test.certificationType}</div>
-                      <div className="text-sm text-gray-500">{test.category}</div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div>
-                      <div className="text-sm text-gray-900">{test.duration} minutes</div>
-                      <div className="text-sm text-gray-500">{test.totalQuestions} questions</div>
-                      <div className="text-xs text-gray-400">Pass: {test.passingScore}%</div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="space-y-1">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(test.status)}`}>
-                        {test.status}
-                      </span>
-                      <div>
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getDifficultyColor(test.difficulty)}`}>
-                          {test.difficulty}
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="space-y-1">
-                      <div className="text-sm text-gray-900">{test.attempts} attempts</div>
-                      <div className="text-sm text-gray-500">{test.passRate}% pass rate</div>
-                      <div className="text-xs text-gray-400">Avg: {test.averageScore}%</div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => {
-                          setSelectedTest(test)
-                          setShowDetailsModal(true)
-                        }}
-                        className="text-blue-600 hover:text-blue-900"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button className="text-green-600 hover:text-green-900">
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button className="text-purple-600 hover:text-purple-900">
-                        <Download className="w-4 h-4" />
-                      </button>
-                      <button className="text-red-600 hover:text-red-900">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {/* Tests Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        {filteredTests.map((test) => (
+          <div
+            key={test.id}
+            className="bg-slate-800 rounded-lg shadow-sm border border-slate-700 overflow-hidden hover:shadow-md transition-shadow duration-200"
+          >
+            {/* Test Header */}
+            <div className="p-6 border-b border-slate-700">
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-white mb-2">{test.name}</h3>
+                  <p className="text-sm text-slate-300 mb-2">{test.description}</p>
+                  <p className="text-sm text-blue-400">{test.programName}</p>
+                </div>
+                <div className="flex flex-col gap-2 ml-4">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(test.status)}`}>
+                    {test.status}
+                  </span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(test.type)}`}>
+                    {test.type}
+                  </span>
+                </div>
+              </div>
+            </div>
 
-      {/* Details Modal */}
-      {showDetailsModal && selectedTest && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium text-gray-900">Test Details</h3>
-              <button
-                onClick={() => setShowDetailsModal(false)}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                <XCircle className="w-6 h-6" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            {/* Test Details */}
+            <div className="p-6">
+              <div className="grid grid-cols-2 gap-4 text-sm mb-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Title</label>
-                  <p className="mt-1 text-sm text-gray-900">{selectedTest.title}</p>
+                  <span className="text-slate-400">Duration:</span>
+                  <span className="text-white ml-2">{test.duration} min</span>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Status</label>
-                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(selectedTest.status)}`}>
-                    {selectedTest.status}
-                  </span>
+                  <span className="text-slate-400">Questions:</span>
+                  <span className="text-white ml-2">{test.totalQuestions}</span>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Difficulty</label>
-                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getDifficultyColor(selectedTest.difficulty)}`}>
-                    {selectedTest.difficulty}
-                  </span>
+                  <span className="text-slate-400">Passing Score:</span>
+                  <span className="text-white ml-2">{test.passingScore}%</span>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Category</label>
-                  <p className="mt-1 text-sm text-gray-900">{selectedTest.category}</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Duration</label>
-                  <p className="mt-1 text-sm text-gray-900">{selectedTest.duration} minutes</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Total Questions</label>
-                  <p className="mt-1 text-sm text-gray-900">{selectedTest.totalQuestions}</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Passing Score</label>
-                  <p className="mt-1 text-sm text-gray-900">{selectedTest.passingScore}%</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Created By</label>
-                  <p className="mt-1 text-sm text-gray-900">{selectedTest.createdBy}</p>
+                  <span className="text-slate-400">Attempts:</span>
+                  <span className="text-white ml-2">{test.attempts}</span>
                 </div>
               </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Description</label>
-                <p className="mt-1 text-sm text-gray-900">{selectedTest.description}</p>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Created</label>
-                  <p className="mt-1 text-sm text-gray-900">{selectedTest.createdAt}</p>
+
+              <div className="mb-4">
+                <div className="flex items-center justify-between text-sm mb-2">
+                  <span className="text-slate-400">Average Score</span>
+                  <span className="text-white">{test.averageScore}%</span>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Last Modified</label>
-                  <p className="mt-1 text-sm text-gray-900">{selectedTest.lastModified}</p>
+                <div className="w-full bg-slate-700 rounded-full h-2">
+                  <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${test.averageScore}%` }}></div>
                 </div>
               </div>
-              
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Attempts</label>
-                  <p className="mt-1 text-2xl font-bold text-blue-600">{selectedTest.attempts}</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Pass Rate</label>
-                  <p className="mt-1 text-2xl font-bold text-green-600">{selectedTest.passRate}%</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Avg Score</label>
-                  <p className="mt-1 text-2xl font-bold text-purple-600">{selectedTest.averageScore}%</p>
-                </div>
+
+              <div className="text-xs text-slate-400 mb-4">
+                <p>Created by: {test.createdBy}</p>
+                <p>Created: {test.createdAt}</p>
+                <p>Last modified: {test.lastModified}</p>
               </div>
-            </div>
-            
-            <div className="flex justify-end space-x-3 mt-6">
-              <button
-                onClick={() => setShowDetailsModal(false)}
-                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >
-                Close
-              </button>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
-                Edit Test
-              </button>
+
+              {/* Actions */}
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => setSelectedTest(test)}
+                  className="flex-1 px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center"
+                >
+                  <Eye className="w-4 h-4 mr-1" />
+                  View
+                </button>
+
+                <button className="px-3 py-2 text-sm border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors duration-200">
+                  <Edit className="w-4 h-4" />
+                </button>
+
+                <button
+                  onClick={() => handleDeleteTest(test.id)}
+                  className="px-3 py-2 text-sm border border-slate-600 text-red-400 rounded-lg hover:bg-red-900/20 transition-colors duration-200"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
 
       {/* Create Test Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium text-gray-900">Create New Certification Test</h3>
-              <button
-                onClick={() => setShowCreateModal(false)}
-                className="text-gray-400 hover:text-gray-600"
-              >
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-slate-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border border-slate-700">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-white">Create New Test</h3>
+              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-300">
                 <XCircle className="w-6 h-6" />
               </button>
             </div>
-            
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Test Title</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Test Name</label>
                   <input
                     type="text"
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter test title"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-400"
+                    placeholder="Enter test name"
                   />
                 </div>
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Certification Type</label>
-                  <input
-                    type="text"
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter certification type"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Category</label>
-                  <select className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Select category</option>
-                    <option>Project Management</option>
-                    <option>Agile</option>
-                    <option>IT Service Management</option>
-                    <option>Quality Management</option>
-                    <option>Cloud Computing</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Difficulty</label>
-                  <select className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Select difficulty</option>
-                    <option>Beginner</option>
-                    <option>Intermediate</option>
-                    <option>Advanced</option>
-                    <option>Expert</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Duration (minutes)</label>
-                  <input
-                    type="number"
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="60"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Total Questions</label>
-                  <input
-                    type="number"
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="50"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Passing Score (%)</label>
-                  <input
-                    type="number"
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="70"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Status</label>
-                  <select className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Draft</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Program</label>
+                  <select className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white">
+                    <option>Project Management Professional (PMP)</option>
+                    <option>Certified Scrum Master (CSM)</option>
+                    <option>Data Science Fundamentals</option>
+                    <option>Advanced Leadership Certificate</option>
                   </select>
                 </div>
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700">Description</label>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
                 <textarea
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-400"
                   rows={3}
-                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter test description"
                 />
               </div>
-            </div>
-            
-            <div className="flex justify-end space-x-3 mt-6">
-              <button
-                onClick={() => setShowCreateModal(false)}
-                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
-                Create Test
-              </button>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Type</label>
+                  <select className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white">
+                    <option>Multiple Choice</option>
+                    <option>Essay</option>
+                    <option>Practical</option>
+                    <option>Mixed</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Duration (min)</label>
+                  <input
+                    type="number"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-400"
+                    placeholder="120"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Questions</label>
+                  <input
+                    type="number"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-400"
+                    placeholder="50"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Passing Score (%)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-400"
+                    placeholder="75"
+                  />
+                </div>
+              </div>
+
+              <div className="flex space-x-3 pt-4">
+                <button
+                  onClick={() => setShowCreateModal(false)}
+                  className="flex-1 px-4 py-2 border border-slate-600 rounded-lg text-slate-300 hover:bg-slate-700"
+                >
+                  Cancel
+                </button>
+                <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                  Create Test
+                </button>
+              </div>
             </div>
           </div>
         </div>
