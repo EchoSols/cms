@@ -61,43 +61,43 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         {/* Back to Home */}
-        <Link 
-          to="/" 
-          className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-8 transition-colors duration-200"
+        <Link
+          to="/"
+          className="inline-flex items-center text-slate-300 hover:text-white mb-8 transition-colors duration-200"
         >
           <ArrowLeft size={20} className="mr-2" />
           Back to Home
         </Link>
 
         {/* Login Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl p-8 text-slate-100">
           {/* Logo and Title */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center mr-3">
-                <div className="w-6 h-6 bg-white rounded-sm"></div>
+              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mr-3">
+                <div className="w-6 h-6 bg-slate-900 rounded-sm"></div>
               </div>
-              <span className="text-2xl font-bold text-gray-900">HR Pro</span>
+              <span className="text-2xl font-bold text-white">HR Pro</span>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-            <p className="text-gray-600">Sign in to your HR Pro account</p>
+            <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
+            <p className="text-slate-300">Sign in to your HR Pro account</p>
           </div>
 
           {/* Error/Success Messages */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center">
-              <AlertCircle className="w-5 h-5 text-red-500 mr-3 flex-shrink-0" />
-              <span className="text-red-700 text-sm">{error}</span>
+            <div className="mb-6 p-4 bg-red-900/30 border border-red-800 rounded-lg flex items-center">
+              <AlertCircle className="w-5 h-5 text-red-400 mr-3 flex-shrink-0" />
+              <span className="text-red-200 text-sm">{error}</span>
             </div>
           )}
 
           {success && (
-            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
-              <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-              <span className="text-green-700 text-sm">{success}</span>
+            <div className="mb-6 p-4 bg-green-900/30 border border-green-800 rounded-lg flex items-center">
+              <CheckCircle className="w-5 h-5 text-green-300 mr-3 flex-shrink-0" />
+              <span className="text-green-200 text-sm">{success}</span>
             </div>
           )}
 
@@ -105,12 +105,12 @@ const LoginPage = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
                 Email Address
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Mail className="h-5 w-5 text-slate-400" />
                 </div>
                 <input
                   type="email"
@@ -118,7 +118,7 @@ const LoginPage = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200"
+                  className="block w-full pl-10 pr-3 py-3 border border-slate-600 bg-slate-900 text-slate-100 placeholder-slate-500 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200"
                   placeholder="Enter your email"
                   required
                 />
@@ -127,12 +127,12 @@ const LoginPage = () => {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-2">
                 Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-5 w-5 text-slate-400" />
                 </div>
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -140,7 +140,7 @@ const LoginPage = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200"
+                  className="block w-full pl-10 pr-12 py-3 border border-slate-600 bg-slate-900 text-slate-100 placeholder-slate-500 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200"
                   placeholder="Enter your password"
                   required
                 />
@@ -150,9 +150,9 @@ const LoginPage = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <EyeOff className="h-5 w-5 text-slate-400 hover:text-slate-200" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <Eye className="h-5 w-5 text-slate-400 hover:text-slate-200" />
                   )}
                 </button>
               </div>
@@ -165,15 +165,15 @@ const LoginPage = () => {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
-                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-indigo-500 focus:ring-indigo-500 border-slate-600 bg-slate-900 rounded"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-slate-300">
                   Remember me
                 </label>
               </div>
               <button
                 type="button"
-                className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                className="text-sm text-slate-300 hover:text-white font-medium"
               >
                 Forgot password?
               </button>
@@ -183,7 +183,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+              className="w-full bg-white text-slate-900 hover:bg-slate-100 disabled:opacity-60 font-semibold py-3 px-4 rounded-full transition-colors duration-200 flex items-center justify-center shadow"
             >
               {isLoading ? (
                 <>
@@ -200,10 +200,10 @@ const LoginPage = () => {
           <div className="my-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
+                <div className="w-full border-t border-slate-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Don't have an account?</span>
+                <span className="px-2 bg-slate-800 text-slate-400">Don't have an account?</span>
               </div>
             </div>
           </div>
@@ -212,7 +212,7 @@ const LoginPage = () => {
           <div className="text-center">
             <Link
               to="/signup"
-              className="text-primary-600 hover:text-primary-700 font-medium"
+              className="text-white underline decoration-slate-500 hover:decoration-white font-medium"
             >
               Create an account
             </Link>
@@ -221,23 +221,23 @@ const LoginPage = () => {
 
         {/* Contact Admin Section */}
         <div className="mt-8 text-center">
-          <p className="text-gray-600 text-sm mb-2">
+          <p className="text-slate-400 text-sm mb-2">
             Having trouble signing in?
           </p>
           <button
             onClick={handleContactAdmin}
-            className="text-primary-600 hover:text-primary-700 font-medium text-sm underline"
+            className="text-slate-300 hover:text-white font-medium text-sm underline"
           >
             Contact Admin
           </button>
         </div>
 
         {/* Footer */}
-        <div className="mt-8 text-center text-gray-500 text-xs">
+        <div className="mt-8 text-center text-slate-500 text-xs">
           <p>© 2024 HR Pro. All rights reserved.</p>
           <div className="mt-2 space-x-4">
-            <a href="#privacy" className="hover:text-gray-700">Privacy Policy</a>
-            <a href="#terms" className="hover:text-gray-700">Terms of Service</a>
+            <a href="#privacy" className="hover:text-slate-300">Privacy Policy</a>
+            <a href="#terms" className="hover:text-slate-300">Terms of Service</a>
           </div>
         </div>
       </div>

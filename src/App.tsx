@@ -1,6 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import LandingPage from '@/pages/LandingPage'
 import LoginPage from '@/pages/LoginPage'
+import SignupPage from '@/pages/SignupPage'
+import VerifyOtpPage from '@/pages/VerifyOtpPage'
+import InitialSetupPage from '@/pages/InitialSetupPage'
+import ProtectedRoute from '@/components/ProtectedRoute'
 
 // Layouts
 import AdminLayout from '@/layouts/AdminLayout'
@@ -9,6 +13,7 @@ import ManagerLayout from '@/layouts/ManagerLayout'
 import HRLayout from '@/layouts/HRLayout'
 import AuditorLayout from '@/layouts/AuditorLayout'
 import TrainerLayout from '@/layouts/TrainerLayout'
+import RoleRoute from '@/components/RoleRoute'
 
 // Dashboard Pages
 import DashboardPage from '@/pages/admin/DashboardPage'
@@ -253,8 +258,12 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/verify-otp" element={<VerifyOtpPage />} />
+          <Route path="/setup-password" element={<InitialSetupPage />} />
           
-          {/* Admin Routes */}
+          {/* Admin Routes (Protected) */}
+          <Route element={<ProtectedRoute />}>
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="employees" element={<EmployeesPage />} />
@@ -290,8 +299,10 @@ function App() {
             <Route path="settings" element={<AdminSettingsPage />} />
             {/* Add more admin routes here as needed */}
           </Route>
+          </Route>
 
-          {/* Employee Routes */}
+          {/* Employee Routes (Protected by role) */}
+          <Route element={<RoleRoute allow={["employee"]} redirectTo="/login" />}>
           <Route path="/employee" element={<EmployeeLayout />}>
             <Route index element={<EmployeeDashboard />} />
             <Route path="profile" element={<ProfilePage />} />
@@ -321,6 +332,7 @@ function App() {
             <Route path="settings" element={<SettingsPage />} />
             {/* Add more employee routes here as needed */}
           </Route>
+          </Route>
 
           {/* Manager Routes */}
           <Route path="/manager" element={<ManagerLayout />}>
@@ -328,7 +340,8 @@ function App() {
             {/* Add more manager routes here as needed */}
           </Route>
 
-          {/* HR Routes */}
+          {/* HR Routes (Protected by role) */}
+          <Route element={<RoleRoute allow={["hr", "admin"]} redirectTo="/login" />}>
           <Route path="/hr" element={<HRLayout />}>
             <Route index element={<HRDashboard />} />
             <Route path="employees" element={<HREmployeesPage />} />
@@ -393,8 +406,10 @@ function App() {
             <Route path="data-management" element={<HRDataManagementPage />} />
             <Route path="roles" element={<HRRolesPage />} />
           </Route>
+          </Route>
 
-          {/* Auditor Routes */}
+          {/* Auditor Routes (Protected by role) */}
+          <Route element={<RoleRoute allow={["auditor"]} redirectTo="/login" />}>
           <Route path="/auditor" element={<AuditorLayout />}>
             <Route index element={<AuditorDashboard />} />
             <Route path="compliance" element={<CompliancePage />} />
@@ -441,8 +456,10 @@ function App() {
             <Route path="settings" element={<AuditorSettingsPage />} />
             {/* Add more auditor routes here as needed */}
           </Route>
+          </Route>
 
-          {/* Trainer Routes */}
+          {/* Trainer Routes (Protected by role) */}
+          <Route element={<RoleRoute allow={["trainer"]} redirectTo="/login" />}>
           <Route path="/trainer" element={<TrainerLayout />}>
             <Route index element={<TrainerDashboard />} />
             <Route path="programs" element={<ProgramsPage />} />
@@ -504,6 +521,7 @@ function App() {
             <Route path="messages" element={<TrainerMessagesPage />} />
             <Route path="profile" element={<TrainerProfilePage />} />
             <Route path="settings" element={<TrainerSettingsPage />} />
+          </Route>
           </Route>
         </Routes>
       </div>

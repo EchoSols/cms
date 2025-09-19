@@ -81,7 +81,7 @@ const PricingModal = ({ isOpen, onClose }: PricingModalProps) => {
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50"
       onClick={handleBackdropClick}
     >
-      <div className="bg-slate-900 rounded-xl sm:rounded-2xl w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+      <div className="bg-slate-900 rounded-xl sm:rounded-2xl w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto scrollbar-hide scroll-smooth">
         {/* Header */}
         <div className="p-4 sm:p-6 lg:p-8 border-b border-slate-700">
           <div className="flex items-center justify-between mb-4">
@@ -168,15 +168,30 @@ const PricingModal = ({ isOpen, onClose }: PricingModalProps) => {
                   ))}
                 </ul>
 
-                <button
-                  className={`w-full py-3 px-4 rounded-lg font-medium transition-colors duration-200 ${
-                    plan.popular
-                      ? "bg-white hover:bg-slate-100 text-slate-900"
-                      : "bg-slate-700 hover:bg-slate-600 text-white"
-                  }`}
-                >
-                  {plan.popular ? "Get Started" : "Choose Plan"}
-                </button>
+              <button
+                className={`w-full py-3 px-4 rounded-lg font-medium transition-colors duration-200 ${
+                  plan.popular
+                    ? "bg-white hover:bg-slate-100 text-slate-900"
+                    : "bg-slate-700 hover:bg-slate-600 text-white"
+                }`}
+                onClick={() => {
+                  const limits: Record<string, { maxEmployees: number; maxStorageGb: number }> = {
+                    Starter: { maxEmployees: 10, maxStorageGb: 10 },
+                    Professional: { maxEmployees: 50, maxStorageGb: 50 },
+                    Enterprise: { maxEmployees: 1000, maxStorageGb: 100 },
+                  }
+                  const selected = {
+                    subscriptionPlan: plan.name,
+                    billingCycle,
+                    ...limits[plan.name as keyof typeof limits],
+                  }
+                  sessionStorage.setItem('selected_plan', JSON.stringify(selected))
+                  onClose()
+                  window.location.href = '/signup'
+                }}
+              >
+                {plan.popular ? "Get Started" : "Choose Plan"}
+              </button>
               </div>
             ))}
           </div>

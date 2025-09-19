@@ -26,8 +26,8 @@ const TestimonialsSection = () => {
   ]
 
   return (
-    <section id="reviews" className="section-padding bg-slate-900">
-      <div className="container-custom">
+    <section id="reviews" className="bg-slate-900 min-h-screen flex items-center py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Trusted by HR Professionals</h2>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto">See what our customers say about HR Pro.</p>

@@ -27,11 +27,19 @@ interface TrainerSidebarProps {
   onClose: () => void
 }
 
+interface NavigationItem {
+  name: string
+  icon: any
+  href?: string
+  badge?: string | null
+  children?: { name: string; href: string }[]
+}
+
 const TrainerSidebar = ({ isOpen, onClose }: TrainerSidebarProps) => {
   const location = useLocation()
   const [expandedMenus, setExpandedMenus] = useState<string[]>([])
 
-  const navigation = [
+  const navigation: NavigationItem[] = [
     {
       name: "Dashboard",
       href: "/trainer",
@@ -41,6 +49,7 @@ const TrainerSidebar = ({ isOpen, onClose }: TrainerSidebarProps) => {
     {
       name: "Training Programs",
       icon: BookOpen,
+      badge: null,
       children: [
         { name: "All Programs", href: "/trainer/programs" },
         { name: "Create Program", href: "/trainer/create-program" },
@@ -51,6 +60,7 @@ const TrainerSidebar = ({ isOpen, onClose }: TrainerSidebarProps) => {
     {
       name: "Course Management",
       icon: Video,
+      badge: null,
       children: [
         { name: "All Courses", href: "/trainer/courses" },
         { name: "Create Course", href: "/trainer/create-course" },
@@ -62,6 +72,7 @@ const TrainerSidebar = ({ isOpen, onClose }: TrainerSidebarProps) => {
     {
       name: "Learner Management",
       icon: Users,
+      badge: null,
       children: [
         { name: "All Learners", href: "/trainer/learners" },
         { name: "Enrollment Management", href: "/trainer/enrollments" },
@@ -73,6 +84,7 @@ const TrainerSidebar = ({ isOpen, onClose }: TrainerSidebarProps) => {
     {
       name: "Assessments & Quizzes",
       icon: CheckSquare,
+      badge: null,
       children: [
         { name: "Create Assessment", href: "/trainer/create-assessment" },
         { name: "Question Bank", href: "/trainer/question-bank" },
@@ -84,6 +96,7 @@ const TrainerSidebar = ({ isOpen, onClose }: TrainerSidebarProps) => {
     {
       name: "Certifications",
       icon: Award,
+      badge: null,
       children: [
         { name: "Certification Programs", href: "/trainer/certifications" },
         { name: "Issue Certificates", href: "/trainer/issue-certificates" },
@@ -95,6 +108,7 @@ const TrainerSidebar = ({ isOpen, onClose }: TrainerSidebarProps) => {
     {
       name: "Skill Development",
       icon: TrendingUp,
+      badge: null,
       children: [
         { name: "Skill Matrix", href: "/trainer/skill-matrix" },
         { name: "Competency Framework", href: "/trainer/competency" },
@@ -106,6 +120,7 @@ const TrainerSidebar = ({ isOpen, onClose }: TrainerSidebarProps) => {
     {
       name: "Schedule & Sessions",
       icon: Calendar,
+      badge: null,
       children: [
         { name: "Training Calendar", href: "/trainer/calendar" },
         { name: "Live Sessions", href: "/trainer/live-sessions" },
@@ -117,6 +132,7 @@ const TrainerSidebar = ({ isOpen, onClose }: TrainerSidebarProps) => {
     {
       name: "Analytics & Reports",
       icon: BarChart3,
+      badge: null,
       children: [
         { name: "Training Dashboard", href: "/trainer/analytics" },
         { name: "Completion Reports", href: "/trainer/completion-reports" },
@@ -128,6 +144,7 @@ const TrainerSidebar = ({ isOpen, onClose }: TrainerSidebarProps) => {
     {
       name: "Resources & Materials",
       icon: FileText,
+      badge: null,
       children: [
         { name: "Resource Library", href: "/trainer/resources" },
         { name: "Upload Materials", href: "/trainer/upload-materials" },
@@ -138,6 +155,7 @@ const TrainerSidebar = ({ isOpen, onClose }: TrainerSidebarProps) => {
     {
       name: "AI Training Recommendations",
       icon: Lightbulb,
+      badge: null,
       children: [
         { name: "Personalized Recommendations", href: "/trainer/ai-recommendations" },
         { name: "Learning Analytics", href: "/trainer/learning-analytics" },
@@ -148,6 +166,7 @@ const TrainerSidebar = ({ isOpen, onClose }: TrainerSidebarProps) => {
     {
       name: "Communication",
       icon: MessageSquare,
+      badge: null,
       children: [
         { name: "Announcements", href: "/trainer/announcements" },
         { name: "Discussion Forums", href: "/trainer/forums" },

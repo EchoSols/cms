@@ -62,7 +62,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50"
       onClick={handleBackdropClick}
     >
-      <div className="bg-slate-900 rounded-xl sm:rounded-2xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+      <div className="bg-slate-900 rounded-xl sm:rounded-2xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto scrollbar-hide scroll-smooth">
         <div className="p-4 sm:p-6 lg:p-8 border-b border-slate-700">
           <div className="flex items-center justify-between mb-4">
             <div>
