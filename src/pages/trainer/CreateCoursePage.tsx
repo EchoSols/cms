@@ -343,22 +343,22 @@ const CreateCoursePage = () => {
                   Estimated Duration (hours) *
                 </label>
                 <input
-                  type="number"
-                  value={form.estimatedDuration}
-                  onChange={(e) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      estimatedDuration: Number.parseInt(e.target.value),
-                    }))
-                  }
-                  className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  min="0"
-                  required
-                />
+                    type="number"
+                    value={form.estimatedDuration}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        estimatedDuration: Number.parseInt(e.target.value),
+                      }))
+                    }
+                    className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-white focus:outline-none focus:ring-2 focus:border-transparent appearance-none [&::-webkit-inner-spin-button]:!hidden [&::-webkit-outer-spin-button]:!hidden [-moz-appearance:textfield]"
+                    min="0"
+                    required
+                  />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 ">
                   Max Enrollments
                 </label>
                 <input
@@ -370,7 +370,7 @@ const CreateCoursePage = () => {
                       maxEnrollments: Number.parseInt(e.target.value),
                     }))
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2  text-white focus-within:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-slate-800"
                   min="1"
                 />
               </div>
