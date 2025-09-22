@@ -160,9 +160,8 @@ const SignupPage = () => {
             <div>
               <label className="block text-sm font-medium text-slate-300">Company Size</label>
               <select value={companySize} onChange={e => setCompanySize(e.target.value)} className="mt-1 w-full rounded-md border border-slate-600 bg-slate-900 px-3 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <option>Small</option>
-                <option>Medium</option>
-                <option>Large</option>
+                <option>Starter</option>
+                <option>Professional</option>
                 <option>Enterprise</option>
               </select>
             </div>

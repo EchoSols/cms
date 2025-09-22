@@ -123,7 +123,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 border border-slate-600 bg-slate-800 text-white rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500 transition-colors duration-200"
-                      placeholder="john@company.com"
+                      placeholder="john@gmail.com"
                     />
                   </div>
                 </div>
@@ -210,10 +210,9 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-white mb-2">Email Us</h4>
-                    <p className="text-slate-300 text-sm">hello@hrpro.com</p>
-                    <p className="text-slate-300 text-sm">support@hrpro.com</p>
+                    <p className="text-slate-300 text-sm">iamshemaleandre@gmail.com</p>
                     <a
-                      href="mailto:hello@hrpro.com"
+                      href="mailto:iamshemaleandre@gmail.com"
                       className="text-slate-200 hover:text-white text-sm font-medium mt-2 inline-block"
                     >
                       Send email
@@ -227,7 +226,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-white mb-2">Call Us</h4>
-                    <p className="text-slate-300 text-sm">+1 (555) 123-4567</p>
+                    <p className="text-slate-300 text-sm">+250 (079) 567-4182</p>
                     <p className="text-slate-300 text-sm">Mon-Fri 9AM-6PM EST</p>
                     <a
                       href="tel:+15551234567"
@@ -244,8 +243,8 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-white mb-2">Visit Us</h4>
-                    <p className="text-slate-300 text-sm">123 Business Ave</p>
-                    <p className="text-slate-300 text-sm">New York, NY 10001</p>
+                    <p className="text-slate-300 text-sm">Kigali Rwanda</p>
+                    <p className="text-slate-300 text-sm">Nyarugenge district</p>
                   </div>
                 </div>
               </div>

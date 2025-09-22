@@ -57,7 +57,7 @@ const LoginPage = () => {
 
   const handleContactAdmin = () => {
     // You can implement this to open email client or contact form
-    window.open('mailto:admin@hrpro.com?subject=Login%20Issue%20-%20HR%20Pro', '_blank')
+    window.open('mailto:iamshemaleandre@gmail.com?subject=Login%20Issue%20-%20HR%20Pro', '_blank')
   }
 
   return (
