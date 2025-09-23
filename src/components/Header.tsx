@@ -17,7 +17,6 @@ const Header = () => {
     { name: "Features", href: "#features" },
     { name: "Pricing", href: "#pricing", onClick: () => setIsPricingModalOpen(true) },
     { name: "Contact", href: "#contact", onClick: () => setIsContactModalOpen(true) },
-    { name: "Reviews", href: "#reviews" },
   ]
 
   return (

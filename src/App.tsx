@@ -248,6 +248,11 @@ import PredictionsPage from '@/pages/trainer/PredictionsPage'
 import ForumsPage from '@/pages/trainer/ForumsPage'
 import TrainerFeedbackPage from '@/pages/trainer/FeedbackPage'
 import TrainerMessagesPage from '@/pages/trainer/MessagesPage'
+import ForgotPasswordPage from '@/pages/ForgotPassword'
+
+
+{/* test endpoints before protecting them*/}
+import HireAMember from '@/pages/admin/HireAMember'
 
 
 function App() {
@@ -261,6 +266,8 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/verify-otp" element={<VerifyOtpPage />} />
           <Route path="/setup-password" element={<InitialSetupPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/hire-member" element={<HireAMember />} />
           
           {/* Admin Routes (Protected) */}
           <Route element={<ProtectedRoute />}>
